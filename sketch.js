@@ -1,64 +1,83 @@
-// a simple game where you click to drop a ball and 
-// try to get as many balls as possible on the spinning shape
-// move the mouse up and down to change the rotation speed of the shape
-// use the right and left keys to make the shape larger or smaller
 
-let spinningShape;
-let highScore = 0;
+// p5play_pilot
+// A p5play game triggers Pilot sounds by sending websocket messages converted to UDP by Chataigne
+
+let block1, block2, block3, ball;
+
+var host = '127.0.0.1:8080'; // address of the websockets server
+var socket; // the websocket connection
 
 function setup() {
-    let canvas = new Canvas("fullscreen");
+    new Canvas(1024,727);
+    world.gravity.y = 10;  
 
-    world.gravity.y = 10;
+    // connect to server...
+    socket = new WebSocket('ws://' + host);
+    socket.onopen = openHandler;    
 
-    // this sprite can be created on a single line, but it's easier to read this way:
-	spinningShape = new Sprite();
-	spinningShape.width = canvas.width/5;
-	spinningShape.height = spinningShape.width;
-    spinningShape.collider = "kinematic";
-
-    textFont("Courier", 24);
+    window.addEventListener("gamepadconnected", (e) => {
+        console.log("Controller Connected");
+    });
 }
 
 function draw() {
-
-    // try the game without this line :)
     clear();
 
-    // the map function translates a value from one range to another
-    // https://p5js.org/reference/#/p5/map
-    spinningShape.rotationSpeed = map(mouse.y, 0, canvas.height, -10, 10);
+    const gamepads = navigator.getGamepads();
 
-    // create a ball when the mouse is clicked
-    // https://p5play.org/learn/input_devices.html
-    if (mouse.presses()) {
-        let ball = new Sprite(mouse.x, -20, 20);
-        // make the ball resist rolling when it touches the spinning shape
-        // https://p5play.org/learn/sprite.html?page=9
-        ball.rotationDrag = 10;
+    if(!gamepads) {
+        return;
     }
 
-    // make the spinning shape larger or smaller using the keyboard
-    // note the difference between presses (above) and pressing (here)
-    if (kb.pressing('right')) {
-        spinningShape.width += 10;
-    } else if (kb.pressing('left')) {
-        spinningShape.width -= 10;
+    const gp = gamepads[0];
+
+    //if A is pressed
+    if (buttonPressed(gp.buttons[0])) {
+
+    }
+    //if B is pressed
+    if (buttonPressed(gp.buttons[1])){
+
     }
 
-    // loop through the allSprites array and see how many are above the center of the screen
-    let currentScore = 0;
-    for (let sprite of allSprites) {
-        if (sprite.y < canvas.height/2) {
-            currentScore++;
-            if (currentScore > highScore) {
-                highScore = currentScore;
-            }
-        }
+    //if X is pressed
+    if (buttonPressed(gp.buttons[2])){
+
     }
 
-    // display the score (minus 1 so it doesn't count the spinning shape)
-    text("BALLS: " + (currentScore-1), 40, 60);
-    text("HIGH:  " + (highScore-1), 40, 86);
+    //if Y is pressed
+    if (buttonPressed(gp.buttons[3])){
 
+    }
+
+    //if L Trigger pressed
+    if (buttonPressed(gp.buttons[5])){
+
+    }
+    
+    //if R Trigger Pressed
+    if (buttonPressed(gp.buttons[7])){
+
+    }
+
+    //if L Bumper pressed
+    if (buttonPressed(gp.buttons[4])){
+
+    }
+
+    //if R Bumper pressed
+    if (buttonPressed(gp.buttons[5])){
+
+    }
+}
+
+function buttonPressed(b) {
+    if (typeof b === "object") {
+        return b.pressed;
+    }
+    return b.value;
+}
+
+function openHandler() {
+    console.log("Connected to socket server at " + host);
 }
