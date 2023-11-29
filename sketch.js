@@ -1,12 +1,4 @@
 
-// p5play_pilot
-// A p5play game triggers Pilot sounds by sending websocket messages converted to UDP by Chataigne
-
-let block1, block2, block3, ball;
-
-var host = '127.0.0.1:8080'; // address of the websockets server
-var socket; // the websocket connection
-
 function setup() {
     new Canvas(1024,727);
     world.gravity.y = 10;  
@@ -15,13 +7,13 @@ function setup() {
     socket = new WebSocket('ws://' + host);
     socket.onopen = openHandler;    
 
-    window.addEventListener("gamepadconnected", (e) => {
-        console.log("Controller Connected");
-    });
+    window.addEventListener("gamepadconnected", gamepadConnnect());
+    window.addEventListener("gamepaddisconnected", gamepadDisconnect());
 }
 
 function draw() {
     clear();
+
 
     const gamepads = navigator.getGamepads();
 
@@ -32,41 +24,41 @@ function draw() {
     const gp = gamepads[0];
 
     //if A is pressed
-    if (buttonPressed(gp.buttons[0])) {
+    if (gp.buttons[0].pressed) {
 
     }
     //if B is pressed
-    if (buttonPressed(gp.buttons[1])){
+    if (gp.buttons[1].pressed){
 
     }
 
     //if X is pressed
-    if (buttonPressed(gp.buttons[2])){
+    if (gp.buttons[2].pressed){
 
     }
 
     //if Y is pressed
-    if (buttonPressed(gp.buttons[3])){
+    if (gp.buttons[3].pressed){
 
     }
 
     //if L Trigger pressed
-    if (buttonPressed(gp.buttons[5])){
+    if (gp.buttons[5].value > 0 || gp.buttons[5].pressed){
 
     }
     
     //if R Trigger Pressed
-    if (buttonPressed(gp.buttons[7])){
+    if (gp.buttons[7].value > 0 || gp.buttons[7].pressed){
 
     }
 
     //if L Bumper pressed
-    if (buttonPressed(gp.buttons[4])){
+    if (gp.buttons[4].value > 0 || gp.buttons[4].pressed){
 
     }
 
     //if R Bumper pressed
-    if (buttonPressed(gp.buttons[5])){
+    if (gp.buttons[5].value > 0 || gp.buttons[5].pressed){
 
     }
 }
