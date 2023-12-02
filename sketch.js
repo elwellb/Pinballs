@@ -73,3 +73,5 @@ function buttonPressed(b) {
 function openHandler() {
     console.log("Connected to socket server at " + host);
 }
+
+
