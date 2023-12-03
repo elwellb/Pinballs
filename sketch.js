@@ -3,6 +3,7 @@ let leftFlipper;
 let rightFlipper;
 let rightFlipperCollider;
 let img;
+let wallGrp;
 
 function preload() {
     img = loadImage("assets/PinballLayout.png");
@@ -19,14 +20,17 @@ function setup() {
    // window.addEventListener("gamepadconnected", gamepadConnect());
     //window.addEventListener("gamepaddisconnected", gamepadDisconnect());
 
+    wallGrp = new Group();
+    wallGrp.width = 1;
+    wallGrp.debug = true;
 
     ball = new Sprite(100, -20, 30);
     ball.img = "assets/SemibreveBall.png";
 
 
-	rightFlipper = new Sprite(160, 400);
+	rightFlipper = new Sprite(475, 845);
 
-    rightFlipperCollider = new Sprite(160, 400, [
+    rightFlipperCollider = new Sprite(470, 850, [
 		[0, -25],
 		[-100, 12.5],
 		[0, 25],
@@ -37,23 +41,21 @@ function setup() {
     
     rightFlipper.img = "assets/MinimFlipperRightSide.png";
     rightFlipper.collider = "k";
-	rightFlipper.addCollider(-60, 0, 25);
-	rightFlipper.addCollider(40, 0, 50);
     rightFlipper.overlaps(allSprites);
     rightFlipper.offset.y = -50;
 	rightFlipper.rotation = 60;
 	rightFlipper.debug = false;
-    rightFlipper.scale = 0.3;
+    rightFlipper.scale = 0.15;
     rightFlipper.mirror.y = true;
 
-    //circle joint colliders
-    rightFlipperCollider.addCollider(-60, 0, 25);
-	rightFlipperCollider.addCollider(40, 0, 50);
+
 	rightFlipperCollider.rotation = -40;
-    rightFlipperCollider.offset.x = -15;
 	rightFlipperCollider.debug = true;
-    rightFlipperCollider.scale.x = 1.4;
-    rightFlipperCollider.scale.y = 0.5;
+    rightFlipperCollider.scale.x = 0.7;
+    rightFlipperCollider.scale.y = 0.3;
+    rightFlipperCollider.offset.x = -10;
+
+
 }
 
 
