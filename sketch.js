@@ -5,6 +5,8 @@ let leftFlipperCollider;
 let rightFlipperCollider;
 let img;
 let wallGrp;
+let interval;
+const gamepadInfo = document.getElementById("gamepad-info");
 
 function preload() {
     img = loadImage("assets/PinballLayout.png");
@@ -14,12 +16,11 @@ function setup() {
     new Canvas(1000, 1000);
     world.gravity.y = 10;  
 
+
     // connect to server...
     //socket = new WebSocket('ws://' + host);
     //socket.onopen = openHandler;    
 
-   // window.addEventListener("gamepadconnected", gamepadConnect());
-    //window.addEventListener("gamepaddisconnected", gamepadDisconnect());
 
     wallGrp = new Group();
     wallGrp.width = 1;
@@ -35,22 +36,15 @@ function setup() {
 
     leftFlipperCollider = new Sprite(280, 852, 'k');
     
-    rightFlipperCollider = new Sprite(470, 850, 
-    //     [
-	// 	[0, -25],
-	// 	[-100, 12.5],
-	// 	[0, 25],
-	// 	[100, 12.5],
-	// 	[0, -25]
-	// ], 
-    'k');
+    rightFlipperCollider = new Sprite(470, 850, 'k');
 
     
     leftFlipper.img = "assets/MinimFlipperLeftSide.png";
     leftFlipper.collider = "k";
     leftFlipper.overlaps(allSprites);
     leftFlipper.offset.y = -50;
-	leftFlipper.rotation = 290;
+    // leftFlipper.offset.x = -25;
+	leftFlipper.rotation = 300;
 	leftFlipper.debug = true;
     leftFlipper.scale = 0.15;
     leftFlipper.mirror.y = true;
@@ -67,15 +61,17 @@ function setup() {
 
 	leftFlipperCollider.rotation = 25;
 	leftFlipperCollider.debug = true;
-	leftFlipperCollider.width = 80;
+	leftFlipperCollider.width = 120;
 	leftFlipperCollider.height = 10;
     // leftFlipperCollider.scale.x = 0.7;
     // leftFlipperCollider.scale.y = 0.3;
-    leftFlipperCollider.offset.x = 15;
+    leftFlipperCollider.offset.x = 10;
+    leftFlipperCollider.bounciness = 0.4;
+
 	
     rightFlipperCollider.rotation = -25;
 	rightFlipperCollider.debug = true;
-    rightFlipperCollider.width = 80;
+    rightFlipperCollider.width = 120;
     rightFlipperCollider.height = 10;
     // rightFlipperCollider.scale.x = 0.7;
     // rightFlipperCollider.scale.y = 0.3;
@@ -289,76 +285,80 @@ function setup() {
 
 
 
+
 function draw() {
     clear();
 
     image(img,0,0);
     img.resize(width,height);
-    // const gamepads = navigator.getGamepads();
 
-    // if(!gamepads) {
-    //     return;
-    // }
+   // if A is pressed
+   if (contro.pressing("a")) {
 
-    // const gp = gamepads[0];
+   }
+   // if B is pressed
+    if (contro.pressing("b")){
 
-    // //if A is pressed
-    // if (gp.buttons[0].pressed) {
+    }
 
-    // }
-    // //if B is pressed
-    // if (gp.buttons[1].pressed){
+    //if X is pressed
+    if (contro.pressing("x")){
 
-    // }
+    }
 
-    // //if X is pressed
-    // if (gp.buttons[2].pressed){
+    //if Y is pressed
+    if (contro.pressing("y")){
 
-    // }
+    }
 
-    // //if Y is pressed
-    // if (gp.buttons[3].pressed){
+    //if L Trigger pressed
+    if (contro.pressing("lt")){
+        leftFlipperCollider.rotateTo(-10, 8);
+        leftFlipper.rotateTo(-100,8);
 
-    // }
+    } else {
+        leftFlipper.rotateTo(-60, 8);
+        leftFlipperCollider.rotateTo(30, 8);
 
-    // //if L Trigger pressed
-    // if (gp.buttons[5].value > 0 || gp.buttons[5].pressed){
-
-    // }
+    }
     
-    // //if R Trigger Pressed
-    // if (gp.buttons[7].value > 0 || gp.buttons[7].pressed){
+    //if R Trigger Pressed
+    if (contro.pressing("rt")){
+        rightFlipperCollider.rotateTo(10, 8);
+        rightFlipper.rotateTo(100,8);
+    } else {
+        rightFlipper.rotateTo(60,8);
+        rightFlipperCollider.rotateTo(-30, 8);
+    }
 
-    // }
+    //if L Bumper pressed
+    if (contro.pressing("l")){
 
-    // //if L Bumper pressed
-    // if (gp.buttons[4].value > 0 || gp.buttons[4].pressed){
+    }
 
-    // }
+    //if R Bumper pressed
+    if (contro.pressing("r")){
 
-    // //if R Bumper pressed
-    // if (gp.buttons[5].value > 0 || gp.buttons[5].pressed){
+    
+    }
 
-    // }
+// if (mouse.presses()) {
+//     rightFlipperCollider.rotateTo(10, 8);
+//     rightFlipper.rotateTo(100,8);
+// }
+// if (mouse.pressed()) {
+//     rightFlipper.rotateTo(70,8);
+//     rightFlipperCollider.rotateTo(-30, 8);
+// }
 
-
-if (mouse.presses()) {
-    rightFlipperCollider.rotateTo(10, 8);
-    rightFlipper.rotateTo(100,8);
-}
-if (mouse.pressed()) {
-    rightFlipper.rotateTo(70,8);
-    rightFlipperCollider.rotateTo(-30, 8);
-}
-
-if (mouse.presses()) {
-    leftFlipperCollider.rotateTo(-10, 50);
-    leftFlipper.rotateTo(-100,50);
-}
-if (mouse.pressed()) {
-    leftFlipper.rotateTo(-60, 50);
-    leftFlipperCollider.rotateTo(30, 50);
-}
+// if (mouse.presses()) {
+//     leftFlipperCollider.rotateTo(-10, 50);
+//     leftFlipper.rotateTo(-100,50);
+// }
+// if (mouse.pressed()) {
+//     leftFlipper.rotateTo(-60, 50);
+//     leftFlipperCollider.rotateTo(30, 50);
+// }
 if (ball.y >= 1200) {
     // ball.life = 200;
     // let x = random(50, 140);
@@ -369,6 +369,7 @@ if (ball.y >= 1200) {
     ball.bounciness = 0.5;
 }
 
+console.log(contro);
 // if (ball.y >= 580 && ball.y <= 660 && ball.x >= 700 && ball.x <= 900) {
 //     plank.velocity.y = -60;
 
@@ -380,15 +381,11 @@ if (ball.y >= 1200) {
 
 }
 
-function buttonPressed(b) {
-    if (typeof b === "object") {
-        return b.pressed;
-    }
-    return b.value;
-}
 
 function openHandler() {
     console.log("Connected to socket server at " + host);
 }
+
+
 
 
