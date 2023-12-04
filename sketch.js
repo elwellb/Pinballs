@@ -1,6 +1,7 @@
 let ball;
 let leftFlipper;
 let rightFlipper;
+let leftFlipperCollider;
 let rightFlipperCollider;
 let img;
 let wallGrp;
@@ -28,16 +29,31 @@ function setup() {
     ball.img = "assets/SemibreveBall.png";
 
 
-	rightFlipper = new Sprite(475, 845);
+	leftFlipper = new Sprite(268, 845);
+	
+    rightFlipper = new Sprite(475, 845);
 
-    rightFlipperCollider = new Sprite(470, 850, [
-		[0, -25],
-		[-100, 12.5],
-		[0, 25],
-		[100, 12.5],
-		[0, -25]
-	], 'k');
+    leftFlipperCollider = new Sprite(280, 852, 'k');
+    
+    rightFlipperCollider = new Sprite(470, 850, 
+    //     [
+	// 	[0, -25],
+	// 	[-100, 12.5],
+	// 	[0, 25],
+	// 	[100, 12.5],
+	// 	[0, -25]
+	// ], 
+    'k');
 
+    
+    leftFlipper.img = "assets/MinimFlipperLeftSide.png";
+    leftFlipper.collider = "k";
+    leftFlipper.overlaps(allSprites);
+    leftFlipper.offset.y = -50;
+	leftFlipper.rotation = 290;
+	leftFlipper.debug = true;
+    leftFlipper.scale = 0.15;
+    leftFlipper.mirror.y = true;
     
     rightFlipper.img = "assets/MinimFlipperRightSide.png";
     rightFlipper.collider = "k";
@@ -49,10 +65,20 @@ function setup() {
     rightFlipper.mirror.y = true;
 
 
-	rightFlipperCollider.rotation = -40;
+	leftFlipperCollider.rotation = 25;
+	leftFlipperCollider.debug = true;
+	leftFlipperCollider.width = 80;
+	leftFlipperCollider.height = 10;
+    // leftFlipperCollider.scale.x = 0.7;
+    // leftFlipperCollider.scale.y = 0.3;
+    leftFlipperCollider.offset.x = 15;
+	
+    rightFlipperCollider.rotation = -25;
 	rightFlipperCollider.debug = true;
-    rightFlipperCollider.scale.x = 0.7;
-    rightFlipperCollider.scale.y = 0.3;
+    rightFlipperCollider.width = 80;
+    rightFlipperCollider.height = 10;
+    // rightFlipperCollider.scale.x = 0.7;
+    // rightFlipperCollider.scale.y = 0.3;
     rightFlipperCollider.offset.x = -10;
 
     wall1 = new Sprite(255, 900);
@@ -125,8 +151,8 @@ function setup() {
     wall11.collider = "static";
     wall11.debug = "true";
     wall11.width = 10;
-    wall11.height = 115;
-    wall11.rotation = 145;
+    wall11.height = 125;
+    wall11.rotation = 149;
 
     wall12 = new Sprite(635, 600);
     wall12.collider = "static";
@@ -176,29 +202,88 @@ function setup() {
     wall19 = new Sprite(535, 745);
     wall19.collider = "static";
     wall19.debug = "true";
-    wall19.width = 20;
+    wall19.width = 12;
     wall19.height = 153;
     
     wall20 = new Sprite(505, 832);
     wall20.collider = "static";
     wall20.debug = "true";
-    wall20.width = 20;
+    wall20.width = 12;
     wall20.height = 70;
     wall20.rotation = 240;
 
     wall21 = new Sprite(216, 745);
     wall21.collider = "static";
     wall21.debug = "true";
-    wall21.width = 20;
+    wall21.width = 12;
     wall21.height = 153;
 
     wall22 = new Sprite(244, 832);
     wall22.collider = "static";
     wall22.debug = "true";
-    wall22.width = 20;
+    wall22.width = 12;
     wall22.height = 70;
     wall22.rotation = 120;
 
+    bumper1 = new Sprite(258, 750);
+    bumper1.collider = "static";
+    bumper1.debug = "true";
+    bumper1.width = 2;
+    bumper1.height = 80;
+   
+    bumper2 = new Sprite(282, 750);
+    bumper2.collider = "static";
+    bumper2.debug = "true";
+    bumper2.width = 2;
+    bumper2.height = 90;
+    bumper2.rotation = 148;
+    
+    bumper3 = new Sprite(282, 790);
+    bumper3.collider = "static";
+    bumper3.debug = "true";
+    bumper3.width = 50;
+    bumper3.height = 2;
+
+    bumper4 = new Sprite(485, 750);
+    bumper4.collider = "static";
+    bumper4.debug = "true";
+    bumper4.width = 2;
+    bumper4.height = 80;
+
+    bumper5 = new Sprite(460, 750);
+    bumper5.collider = "static";
+    bumper5.debug = "true";
+    bumper5.width = 2;
+    bumper5.height = 90;
+    bumper5.rotation = 212;
+   
+    bumper6 = new Sprite(460, 790);
+    bumper6.collider = "static";
+    bumper6.debug = "true";
+    bumper6.width = 50;
+    bumper6.height = 2;
+
+    plank = new Sprite(610, 875);
+    plank.collider = "static";
+    plank.debug = "true";
+    plank.width = 38;
+    plank.height = 15;
+    plank.bounciness = 6;
+    
+    circle1 = new Sprite(279, 359);
+    circle1.collider = "static";
+    circle1.debug = "true";
+    circle1.d = 60;
+    
+    circle2 = new Sprite(375, 278);
+    circle2.collider = "static";
+    circle2.debug = "true";
+    circle2.d = 60;
+
+    circle3 = new Sprite(470, 359);
+    circle3.collider = "static";
+    circle3.debug = "true";
+    circle3.d = 60;
 
 }
 
@@ -265,15 +350,34 @@ if (mouse.pressed()) {
     rightFlipper.rotateTo(70,8);
     rightFlipperCollider.rotateTo(-30, 8);
 }
-if (frameCount % 100 == 0) {
-    ball.life = 200;
-    let x = random(50, 140);
-    ball = new Sprite(x, -100, 300);
+
+if (mouse.presses()) {
+    leftFlipperCollider.rotateTo(-10, 50);
+    leftFlipper.rotateTo(-100,50);
+}
+if (mouse.pressed()) {
+    leftFlipper.rotateTo(-60, 50);
+    leftFlipperCollider.rotateTo(30, 50);
+}
+if (ball.y >= 1200) {
+    // ball.life = 200;
+    // let x = random(50, 140);
+    ball = new Sprite(615, 800, 300);
     ball.img = "assets/SemibreveBall.png";
     ball.scale = 0.1;
     ball.debug = true;
     ball.bounciness = 0.5;
 }
+
+// if (ball.y >= 580 && ball.y <= 660 && ball.x >= 700 && ball.x <= 900) {
+//     plank.velocity.y = -60;
+
+// }
+
+// if (kb.pressing('p')) {
+//     plank.velocity.y = -10;
+// }
+
 }
 
 function buttonPressed(b) {
