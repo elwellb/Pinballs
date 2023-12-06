@@ -12,9 +12,10 @@ let trebleNote;
 let bassNote;
 let speedNote;
 
-let noteOctave;
-let noteNote;
-let noteVelo;
+let noteOctave = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F"];
+let octaveIndex = 0;
+let noteVelo = "f";
+let noteVoice = 0;
 
 function preload() {
     img = loadImage("assets/PinballLayout.png");
@@ -32,15 +33,18 @@ function setup() {
     wallGrp = new Group();
     wallGrp.width = 10;
     wallGrp.height = 10;
-    wallGrp.debug = true;
+    //wallGrp.debug = true;
     wallGrp.collider = "s";
+    wallGrp.visible = false;
 
     bumperGrp = new Group();
     bumperGrp.collider = "static";
-    bumperGrp.debug = "true";
+    //bumperGrp.debug = "true";
+    bumperGrp.visible = false;
 
     ball = new Sprite(100, -20, 30);
     ball.img = "assets/SemibreveBall.png";
+    ball.visible = false;
 
 
 	leftFlipper = new Sprite(268, 845);
@@ -58,7 +62,7 @@ function setup() {
     leftFlipper.offset.y = -50;
     // leftFlipper.offset.x = -25;
 	leftFlipper.rotation = 300;
-	leftFlipper.debug = true;
+	//leftFlipper.debug = true;
     leftFlipper.scale = 0.15;
     leftFlipper.mirror.y = true;
     
@@ -67,28 +71,31 @@ function setup() {
     rightFlipper.overlaps(allSprites);
     rightFlipper.offset.y = -50;
 	rightFlipper.rotation = 60;
-	rightFlipper.debug = false;
+	//rightFlipper.debug = false;
     rightFlipper.scale = 0.15;
     rightFlipper.mirror.y = true;
+    
 
 
 	leftFlipperCollider.rotation = 25;
-	leftFlipperCollider.debug = true;
+	//leftFlipperCollider.debug = true;
 	leftFlipperCollider.width = 120;
 	leftFlipperCollider.height = 10;
     // leftFlipperCollider.scale.x = 0.7;
     // leftFlipperCollider.scale.y = 0.3;
     leftFlipperCollider.offset.x = 10;
     leftFlipperCollider.bounciness = 0.4;
+    leftFlipperCollider.visible = false;
 
 	
     rightFlipperCollider.rotation = -25;
-	rightFlipperCollider.debug = true;
+	//rightFlipperCollider.debug = true;
     rightFlipperCollider.width = 120;
     rightFlipperCollider.height = 10;
     // rightFlipperCollider.scale.x = 0.7;
     // rightFlipperCollider.scale.y = 0.3;
     rightFlipperCollider.offset.x = -10;
+    rightFlipperCollider.visible = false;
 
     wall1 = new wallGrp.Sprite(255, 900);
     wall1.width = 200;
@@ -206,17 +213,19 @@ function setup() {
     bumper6.width = 50;
     bumper6.height = 2;
 
-    plank = new Sprite(610, 875);
-    plank.collider = "static";
-    plank.debug = "true";
+    plank = new Sprite(610, 950);
+    plank.collider = "k";
     plank.width = 38;
     plank.height = 15;
     plank.bounciness = 6;
+    plank.color = "black";
+    plank.stroke = "black;"
 
     circleGrp = new Group();
     circleGrp.collider = "static";
-    circleGrp.debug = "true";
+    //circleGrp.debug = "true";
     circleGrp.d = 60;
+    circleGrp.visible = false;
     
     speedNote = new circleGrp.Sprite(279, 359);
 
@@ -310,48 +319,54 @@ if (ball.y >= 1200) {
     ball.bounciness = 0.5;
 }
 
-console.log(contro);
 
 if (ball.collides(leftFlipperCollider) || ball.collides(rightFlipperCollider)) {
-    playNote("2C");
+    playNote("C");
 }
 
 if (ball.collides(wallGrp)) {
-    playNote("4A");
+    playNote("A");
 }
 
 if (ball.collides(bassNote)) {
-    //playNote("")
-    if (noteOctave > 0) {
-    noteOctave--;
+    if (octaveIndex >= 0 && octaveIndex < 16) {
+    octaveIndex++;
     }
+    playNote("E");
 }
 
 if (ball.collides(trebleNote)) {
-    //playNote("")
-    if (noteOctave < 16) {
-    noteOctave++;
+    if (octaveIndex <= 16 && octaveIndex > 0) {
+    octaveIndex--;
     }
+    playNote("G");
 }
 
 if (ball.collides(speedNote)) {
 
-    //noteVelo = round(random()
+    noteVelo = randomChooser();
+    playNote("D");
+    }
+
+    if (ball.collides(bumperGrp)) {
+        noteVoice = randomChooser();
+    }
+
+if (contro.presses("a")) {
+    plank.velocity.y = -5;
 }
-// if (ball.y >= 580 && ball.y <= 660 && ball.x >= 700 && ball.x <= 900) {
-//     plank.velocity.y = -60;
 
-// }
-
-// if (kb.pressing('p')) {
-//     plank.velocity.y = -10;
-// }
+if (plank.y <= 875) {
+    plank.y = 950
+    plank.velocity.y = 0;
+}
 
 }
 
 
     function playNote(theNote) {
-        let note = "note:" + noteOctave + theNote + "ff";
+        let note = "note:" + noteVoice + noteOctave[octaveIndex] + theNote + noteVelo + "f";
+    
     
         // send the note to the websocket server
         // (if the socket is open and ready)
@@ -367,7 +382,29 @@ if (ball.collides(speedNote)) {
         console.log("Connected to socket server at " + host);
       }
 
+function randomChooser() {
+    let numOrLetter;
+    numOrLetter = round(random(1));
+    
+    if (numOrLetter == 0) {
+       return round(random(1,9));
+
+    } else if (numOrLetter == 1) {
+        let randLet = round(random(5));
+        if (randLet == 0) {
+            return "a";
+        } else if (randLet == 1) {
+           return "b";
+        } else if (randLet == 2) {
+           return "c";
+        } else if (randLet == 3) {
+           return "d";
+        } else if (randLet == 4) {
+           return "e";
+        } else if (randLet == 5) {
+           return "f";
+        }
+}
 
 
-
-
+}
