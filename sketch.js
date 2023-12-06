@@ -39,6 +39,7 @@ function setup() {
 
     bumperGrp = new Group();
     bumperGrp.collider = "static";
+    bumperGrp.bounciness = 1.4;
     //bumperGrp.debug = "true";
     bumperGrp.visible = false;
 
@@ -85,7 +86,7 @@ function setup() {
     // leftFlipperCollider.scale.x = 0.7;
     // leftFlipperCollider.scale.y = 0.3;
     leftFlipperCollider.offset.x = 10;
-    leftFlipperCollider.bounciness = 0.4;
+    leftFlipperCollider.bounciness = 0.6;
     leftFlipperCollider.visible = false;
 
 	
@@ -97,6 +98,7 @@ function setup() {
     // rightFlipperCollider.scale.y = 0.3;
     rightFlipperCollider.offset.x = -10;
     rightFlipperCollider.visible = false;
+    rightFlipperCollider.bounciness = 0.6;
 
     wall1 = new wallGrp.Sprite(255, 900);
     wall1.width = 200;
@@ -329,14 +331,14 @@ if (ball.collides(wallGrp)) {
 }
 
 if (ball.collides(bassNote)) {
-    if (octaveIndex >= 0 && octaveIndex < 16) {
+    if (octaveIndex >= 0 && octaveIndex < 15) {
     octaveIndex++;
     }
     playNote("E");
 }
 
 if (ball.collides(trebleNote)) {
-    if (octaveIndex <= 16 && octaveIndex > 0) {
+    if (octaveIndex <= 15 && octaveIndex > 0) {
     octaveIndex--;
     }
     playNote("G");
