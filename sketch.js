@@ -45,6 +45,7 @@ function setup() {
     ball = new Sprite(100, -20, 30);
     ball.img = "assets/SemibreveBall.png";
     ball.visible = false;
+    
 
 
 	leftFlipper = new Sprite(268, 845);
@@ -315,7 +316,6 @@ if (ball.y >= 1200) {
     ball = new Sprite(615, 800, 300);
     ball.img = "assets/SemibreveBall.png";
     ball.scale = 0.1;
-    ball.debug = true;
     ball.bounciness = 0.5;
 }
 
